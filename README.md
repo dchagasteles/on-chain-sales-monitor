@@ -1,0 +1,65 @@
+# DropsOrg NFT Price API
+
+## Project Setup
+
+Once you clone or download project go into you folder
+
+> now cope **.env.local** file to **.env** file
+
+### Install all dependent libraries
+
+```
+npm install
+```
+
+### Run pending migrations & seeds
+
+https://github.com/sequelize/cli
+
+```
+npm run migrate
+```
+
+## API endpoints
+
+### POST /api/orders
+
+```
+curl -X POST -H 'Content-Type: application/json' http://localhost:8082/api/v1/orders?api_key=DCl30d9scVa -d '{
+    "event_name": "OrdersMatched",
+    "tx_id": "0xTransactionHash",
+    "contract_address": "0x7f268357a8c2552623316e2562d90e642bb538e5",
+    "args": [
+        "",
+        "",
+        "",
+        "0x20",
+        "",
+    ]
+}'
+```
+
+### GET /api/v1/orders/:txHash
+
+```
+curl -X GET -H 'Content-Type: application/json' http://localhost:8082/api/v1/orders/txHash?api_key=DCl30d9scVa
+```
+
+### DELETE /api/v1/orders/:txHash
+
+```
+curl -X DELETE -H 'Content-Type: application/json' http://localhost:8082/api/v1/orders/txHash?api_key=DCl30d9scVa
+```
+
+# QuickNode Webhook
+
+- Contract Name:
+  WyvernExchangeContract
+- Contract Address:
+  0x7f268357a8c2552623316e2562d90e642bb538e5
+- Event Name:
+  OrdersMatched
+- ABI URL:
+  https://raw.githubusercontent.com/Dropsorg/smart-contracts-abis/master/abis/WyvernExchangeV2.abi
+- WebHook URL:
+  https://b2a7-217-150-72-243.ngrok.io/api/v1/addorder?api_key=Dcopvom3X039&chainId=1
