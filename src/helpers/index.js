@@ -7,20 +7,30 @@ export const successResponse = (req, res, data, code = 200) =>
     success: true,
   });
 
-export const errorResponse = (
+export const errorResponse = async (
   req,
   res,
+  from,
   errorMessage = 'Something went wrong',
   code = 500,
   error = {}
-) =>
-  res.status(500).json({
+) => {
+  if (from !== '') {
+    await Log.create({
+      from: from,
+      msg: errorMessage,
+      type: 'error',
+    });
+  }
+
+  return res.status(500).json({
     code,
     errorMessage,
     error,
     data: null,
     success: false,
   });
+};
 
 export const checkNFT = async (address, chainId) => {
   let nft = await Nft.findOne({

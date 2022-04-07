@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const cluster = require('cluster');
 const numCores = require('os').cpus().length;
 const app = require('./app');
-const { updateOrdersCronJob } = require('./src/engine/cron');
+const { removeOrdersCron } = require('./src/engine/cron');
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (uncaughtExc) => {
@@ -63,8 +63,8 @@ const setUpExpress = () => {
 
   const server = app.listen(port, () => {
     console.log(`App running on port ${chalk.greenBright(port)}...`);
-    console.log('====>starting updateOrdersCronJob');
-    updateOrdersCronJob.start();
+    console.log('====>starting removeOrdersCron');
+    removeOrdersCron.start();
   });
 
   // In case of an error
@@ -79,7 +79,8 @@ const setUpExpress = () => {
     console.log(chalk.bgRed('UNHANDLED REJECTION! � Shutting down...'));
     console.log(err.name, err.message);
     // Close server & exit process
-    if (updateOrdersCronJob) updateOrdersCronJob.destroy();
+    if (removeOrdersCron !== undefined || removeOrdersCron !== null)
+      removeOrdersCron.stop();
 
     server.close(() => {
       process.exit(1);

@@ -12,43 +12,41 @@ Once you clone or download project go into you folder
 npm install
 ```
 
-### Run pending migrations & seeds
-
-https://github.com/sequelize/cli
-
-```
-npm run migrate
-```
-
 ## API endpoints
 
 ### POST /api/orders
 
 ```
-curl -X POST -H 'Content-Type: application/json' http://localhost:8082/api/v1/orders?api_key=DCl30d9scVa -d '{
+curl -X POST -H 'Content-Type: application/json' 'http://localhost:8082/api/v1/orders?api_key=DCl30d9scVa&chainId=1' -d '{
     "event_name": "OrdersMatched",
     "tx_id": "0xTransactionHash",
     "contract_address": "0x7f268357a8c2552623316e2562d90e642bb538e5",
-    "args": [
-        "",
-        "",
-        "",
-        "0x20",
-        "",
-    ]
+    "args": ["","","","0xDE0B6B3A7640000",""]
 }'
 ```
 
 ### GET /api/v1/orders/:txHash
 
 ```
-curl -X GET -H 'Content-Type: application/json' http://localhost:8082/api/v1/orders/txHash?api_key=DCl30d9scVa
+curl -X GET -H 'Content-Type: application/json' 'http://localhost:8082/api/v1/orders/0xTransactionHash?api_key=DCl30d9scVa'
 ```
 
 ### DELETE /api/v1/orders/:txHash
 
 ```
-curl -X DELETE -H 'Content-Type: application/json' http://localhost:8082/api/v1/orders/txHash?api_key=DCl30d9scVa
+curl -X DELETE -H 'Content-Type: application/json' 'http://localhost:8082/api/v1/orders/0xTransactionHash?api_key=DCl30d9scVa'
+```
+
+### GET /api/v1/logs
+
+```
+curl -X GET -H 'Content-Type: application/json' 'http://localhost:8082/api/v1/logs?api_key=DCl30d9scVa'
+```
+
+### DELETE /api/v1/logs
+
+```
+curl -X DELETE -H 'Content-Type: application/json' 'http://localhost:8082/api/v1/logs?api_key=DCl30d9scVa'
 ```
 
 # QuickNode Webhook

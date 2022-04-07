@@ -26,7 +26,7 @@ app.use(bodyParser.json());
 
 function validateAuthorization(req) {
   if (req.query && req.query.api_key) {
-    return req.query.api_key === process.env.DROP_API_KEY;
+    return req.query.api_key === process.env.DROPS_ORDER_API_KEY;
   }
   return false;
 }

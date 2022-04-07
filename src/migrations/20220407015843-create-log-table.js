@@ -2,32 +2,30 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Orders', {
-      transactionHash: {
-        type: Sequelize.STRING,
+    queryInterface.createTable('Logs', {
+      id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.INTEGER,
       },
-      price: {
-        type: Sequelize.FLOAT,
-        allowNull: false,
-      },
-      chainId: {
-        allowNull: false,
+      from: {
         type: Sequelize.STRING,
-      },
-      used: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
       },
-      source: {
-        allowNull: false,
+      msg: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      type: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
     }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Orders'),
+
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Logs'),
 };

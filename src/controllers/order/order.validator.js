@@ -1,9 +1,10 @@
 const Joi = require('joi');
+import { contractAddresses } from '../../config/contractAddresses';
 
 export const addOrder = {
   body: {
-    // event_name: Joi.string().valid('OrdersMatched').required(),
-    // contract_address: Joi.string().required(),
+    event_name: Joi.string().valid('OrdersMatched').required(),
+    contract_address: Joi.string().required(),
     tx_id: Joi.string().required(),
   },
 };

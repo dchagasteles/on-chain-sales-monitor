@@ -6,19 +6,26 @@ import { contractAddresses } from '../../config/contractAddresses';
 
 export const addOrder = async (req, res) => {
   try {
-    const { tx_id, args, event_name, contract_address } = req.body;
-    const transactionHash = tx_id;
+    const { tx_id, args, contract_address } = req.body;
     const chainId = req.query.chainId || '1';
-    const bigPrice = new BigNumber(args[3]);
-    const price = bigPrice.div('1000000000000000000').toNumber().toString();
-    const wyvernExchangeV2 = contractAddresses[chainId].wyvernExchangeV2;
 
-    if (
-      event_name === 'OrdersMatched' &&
-      contract_address === wyvernExchangeV2
-    ) {
+    if (contract_address != contractAddresses[chainId].wyvernExchangeV2) {
+      return await errorResponse(
+        req,
+        res,
+        'order/addOrder',
+        'Not from WyvernExchangeV2'
+      );
+    }
+
+    if (args && args.length > 0) {
+      const transactionHash = tx_id;
+
+      const bigPrice = new BigNumber(args[3]);
+      const price = bigPrice.div('10000000000000000000').toNumber().toFixed(2);
+
       const order = await Order.findOne({
-        where: { transactionHash },
+        where: { transactionHash, chainId },
       });
 
       if (!order) {
@@ -26,68 +33,59 @@ export const addOrder = async (req, res) => {
           transactionHash,
           price,
           chainId,
-          createdAt: new Date(),
-          updatedAt: new Date(),
           used: false,
+          source: contract_address,
         };
 
         await Order.create(payload);
-      } else {
-        await Order.destroy({
-          where: {
-            transactionHash,
-          },
-        });
       }
     }
 
     return successResponse(req, res, {});
   } catch (error) {
-    console.log('===>addorder failed', error);
-    return errorResponse(req, res, error.message);
+    console.log(error);
+    return await errorResponse(req, res, 'order/addOrder', error.message);
   }
 };
 
 export const getOrder = async (req, res) => {
   try {
     const { transactionHash } = req.params;
+    const chainId = req.query.chainId || '1';
+    const page = req.query.page || 1;
+    const limit = 100;
 
-    const { rows, count } = await Order.findAndCountAll({
+    const { count, rows } = await Order.findAndCountAll({
       order: [['createdAt', 'DESC']],
       offset: (page - 1) * limit,
       limit,
       where: {
         transactionHash,
+        chainId,
       },
     });
 
-    if (count === 1) {
-      return successResponse(req, res, rows[0]);
-    } else if (count > 1) {
-      await Order.destroy({
-        where: {
-          transactionHash,
-        },
-      });
-    }
-    return successResponse(req, res, {});
+    return successResponse(req, res, count > 0 ? rows[0] : {});
   } catch (error) {
-    return errorResponse(req, res, error.message);
+    console.log(error);
+    return await errorResponse(req, res, 'order/getOrder', error.message);
   }
 };
 
 export const deleteOrder = async (req, res) => {
   try {
     const { transactionHash } = req.params;
+    const chainId = req.query.chainId || '1';
 
     await Order.destroy({
       where: {
         transactionHash,
+        chainId,
       },
     });
 
     return successResponse(req, res, {});
   } catch (error) {
-    return errorResponse(req, res, error.message);
+    return await errorResponse(req, res, 'order/deleteOrder', error.message);
   }
 };
