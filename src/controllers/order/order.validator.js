@@ -1,5 +1,4 @@
 const Joi = require('joi');
-import { contractAddresses } from '../../config/contractAddresses';
 
 export const addOrder = {
   body: {
