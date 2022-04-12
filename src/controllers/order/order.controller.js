@@ -28,17 +28,25 @@ export const getOrders = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { tx_id, args, contract_address } = req.body;
-    const chainId = req.query.chainId || '1';
+    const { tx_id, args, contract_address, event_name } = req.body;
 
-    if (contract_address != contractAddresses[chainId].wyvernExchangeV2) {
+    if (
+      !event_name ||
+      !tx_id ||
+      !args ||
+      !contractAddresses ||
+      event_name != 'OrdersMatched' ||
+      contract_address != contractAddresses[chainId].wyvernExchangeV2 ||
+      args.length < 3
+    ) {
       return await errorResponse(
         req,
         res,
         'order/addOrder',
-        'Not from WyvernExchangeV2'
+        'Invalid Payload data'
       );
     }
+    const chainId = req.query.chainId || '1';
 
     if (args && args.length > 0) {
       const transactionHash = tx_id;
