@@ -13,6 +13,7 @@ router.post(
   validate(orderValidator.addOrder),
   orderController.addOrder
 );
+router.get('/orders', orderController.getOrders);
 
 // for Drops API
 router.get(
