@@ -37,8 +37,7 @@ export const addOrder = async (req, res) => {
       !args ||
       !contractAddresses ||
       event_name != 'OrdersMatched' ||
-      contract_address != contractAddresses[chainId].wyvernExchangeV2 ||
-      args.length < 3
+      contract_address != contractAddresses[chainId].wyvernExchangeV2
     ) {
       return await errorResponse(
         req,
