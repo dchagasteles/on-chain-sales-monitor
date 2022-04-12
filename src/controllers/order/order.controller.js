@@ -29,6 +29,7 @@ export const getOrders = async (req, res) => {
 export const addOrder = async (req, res) => {
   try {
     const { tx_id, args, contract_address, event_name } = req.body;
+    const chainId = req.query.chainId || '1';
 
     if (
       !event_name ||
@@ -46,7 +47,6 @@ export const addOrder = async (req, res) => {
         'Invalid Payload data'
       );
     }
-    const chainId = req.query.chainId || '1';
 
     if (args && args.length > 0) {
       const transactionHash = tx_id;
