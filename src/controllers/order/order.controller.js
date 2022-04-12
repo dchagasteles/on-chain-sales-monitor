@@ -31,20 +31,31 @@ export const addOrder = async (req, res) => {
     const { tx_id, args, contract_address, event_name } = req.body;
     const chainId = req.query.chainId || '1';
 
-    if (
-      !event_name ||
-      !tx_id ||
-      !args ||
-      !contractAddresses ||
-      event_name != 'OrdersMatched' ||
-      contract_address != contractAddresses[chainId].wyvernExchangeV2
-    ) {
-      return await errorResponse(
-        req,
-        res,
-        'order/addOrder',
-        'Invalid Payload data'
-      );
+    let errorMessage = '';
+    if (!contract_address) {
+      errorMessage += 'No contract_address,';
+    }
+    if (contract_address != contractAddresses[chainId].wyvernExchangeV2) {
+      errorMessage += 'Invalid contract_address';
+    }
+    if (!args) {
+      errorMessage += 'No args';
+    }
+    if (args.length < 3) {
+      errorMessage += 'Invalid args';
+    }
+    if (!tx_id) {
+      errorMessage += 'No tx_id';
+    }
+    if (!event_name) {
+      errorMessage += 'No event_name';
+    }
+    if (event_name !== 'OrdersMatched') {
+      errorMessage += 'Invalid event_name';
+    }
+
+    if (errorMessage !== '') {
+      return errorResponse(req, res, 'transfer/addTransfer', errorMessage);
     }
 
     if (args && args.length > 0) {
