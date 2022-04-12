@@ -7,12 +7,6 @@ import { Order, Log } from '../models';
 /// remove unncessary sales every 4 hours
 ////////////////////////////////////////////////////////////////////////////////////////
 export const removeOrders = async () => {
-  await Log.create({
-    from: 'cron/updateOrdres',
-    msg: 'removing orders before 4 hours ago',
-    type: 'log',
-  });
-
   const now = new Date();
   const ONE_HOUR = 60 * 60 * 1000; /* ms */
   const dateFourHoursAgo = new Date(now.getTime() - ONE_HOUR * 4);
@@ -28,7 +22,9 @@ export const removeOrders = async () => {
   } catch (e) {
     await Log.create({
       from: 'cron/updateOrdres',
-      msg: `failed to remove orders before ${dateFourHoursAgo.toString()}`,
+      msg: `failed to remove orders before ${dateFourHoursAgo.toString()}, ${
+        e.message
+      }`,
       type: 'error',
     });
   }
