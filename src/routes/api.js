@@ -14,6 +14,7 @@ router.post(
   orderController.addOrder
 );
 router.get('/orders', orderController.getOrders);
+router.delete('/orders', orderController.deleteOrders);
 
 // for Drops API
 router.get(
@@ -27,8 +28,6 @@ router.delete(
   validate(orderValidator.deleteOrder),
   orderController.deleteOrder
 );
-
-router.delete('/orders', orderController.deleteOrders);
 
 // for Logs
 router.get('/logs', logController.getLogs);

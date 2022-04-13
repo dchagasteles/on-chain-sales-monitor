@@ -55,7 +55,7 @@ export const addOrder = async (req, res) => {
         where: { transactionHash, chainId },
       });
 
-      if (order) {
+      if (!order) {
         const payload = {
           transactionHash,
           price,

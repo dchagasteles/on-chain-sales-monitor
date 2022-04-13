@@ -37,6 +37,12 @@ curl -X GET -H 'Content-Type: application/json' 'https://openseaorders.drops.co/
 curl -X DELETE -H 'Content-Type: application/json' 'https://openseaorders.drops.co/api/v1/orders/0xTransactionHash?api_key=DCl30d9scVa'
 ```
 
+### DELETE /api/v1/orders
+
+```
+curl -X DELETE -H 'Content-Type: application/json' 'https://openseaorders.drops.co/api/v1/orders?api_key=DCl30d9scVa'
+```
+
 ### GET /api/v1/logs
 
 ```
