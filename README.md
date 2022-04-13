@@ -17,7 +17,7 @@ npm install
 ### POST /api/orders
 
 ```
-curl -X POST -H 'Content-Type: application/json' 'https://openseaorders.drops.co/api/v1/orders?api_key=DCl30d9scVa&chainId=1' -d '{
+curl -X POST -H 'Content-Type: application/json' 'https://openseaorders.drops.co/api/v1/orders?chainId=1&api_key=DCl30d9scVa' -d '{
     "event_name": "OrdersMatched",
     "tx_id": "0xTransactionHash",
     "contract_address": "0x7f268357a8c2552623316e2562d90e642bb538e5",
