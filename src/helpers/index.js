@@ -1,4 +1,4 @@
-import { Nft } from '../models';
+import { Nft, Log } from '../models';
 
 export const successResponse = (req, res, data, code = 200) =>
   res.send({

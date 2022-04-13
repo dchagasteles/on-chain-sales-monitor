@@ -28,6 +28,8 @@ router.delete(
   orderController.deleteOrder
 );
 
+router.delete('/orders', orderController.deleteOrders);
+
 // for Logs
 router.get('/logs', logController.getLogs);
 router.delete('/logs', logController.clearLogs);

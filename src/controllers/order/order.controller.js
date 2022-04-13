@@ -28,7 +28,7 @@ export const getOrders = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { tx_id, args, contract_address } = req.body;
+    const { tx_id, args, contract_address } = req.body.body;
     const chainId = req.query.chainId || '1';
 
     if (contract_address != contractAddresses[chainId].wyvernExchangeV2) {
@@ -42,7 +42,9 @@ export const addOrder = async (req, res) => {
     if (!args) {
       return errorResponse(req, res, 'order/addOrder', 'Invalid args');
     }
-
+    if (!tx_id) {
+      return errorResponse(req, res, 'order/addOrder', 'No tx_id');
+    }
     if (args && args.length > 0) {
       const transactionHash = tx_id;
 
@@ -53,7 +55,7 @@ export const addOrder = async (req, res) => {
         where: { transactionHash, chainId },
       });
 
-      if (!order) {
+      if (order) {
         const payload = {
           transactionHash,
           price,
@@ -112,5 +114,21 @@ export const deleteOrder = async (req, res) => {
     return successResponse(req, res, {});
   } catch (error) {
     return await errorResponse(req, res, 'order/deleteOrder', error.message);
+  }
+};
+
+export const deleteOrders = async (req, res) => {
+  try {
+    const chainId = req.query.chainId || '1';
+
+    await Order.destroy({
+      where: {
+        chainId,
+      },
+    });
+
+    return successResponse(req, res, {});
+  } catch (error) {
+    return await errorResponse(req, res, 'order/deleteOrders', error.message);
   }
 };
