@@ -49,7 +49,7 @@ export const addOrder = async (req, res) => {
       const transactionHash = tx_id;
 
       const bigPrice = new BigNumber(args[3]);
-      const price = bigPrice.div('1000000000000000000').toNumber().toFixed(2);
+      const price = bigPrice.div('1000000000000000000').toNumber().toFixed(8);
 
       const order = await Order.findOne({
         where: { transactionHash, chainId },
