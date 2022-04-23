@@ -1,12 +1,9 @@
-import BigNumber from 'bignumber.js';
-
 import { Order } from '../../models';
 import {
   successResponse,
   errorResponse,
   parseQuickNodeRequest,
 } from '../../helpers';
-import { contractAddresses } from '../../config/contractAddresses';
 
 export const getOrders = async (req, res) => {
   try {

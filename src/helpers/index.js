@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js';
 import { Nft, Log } from '../models';
+import { contractAddresses } from '../config/contractAddresses';
 
 export const successResponse = (req, res, data, code = 200) =>
   res.send({
