@@ -35,7 +35,7 @@ export const addOrder = async (req, res) => {
       return errorResponse(req, res, 'order/addOrder', error);
     }
 
-    const { transactionHash, price, chainId } = data;
+    const { transactionHash, price, chainId, contract } = data;
 
     const order = await Order.findOne({
       where: { transactionHash, chainId },
@@ -47,7 +47,7 @@ export const addOrder = async (req, res) => {
         price,
         chainId,
         used: false,
-        source: contract_address,
+        source: contract,
       };
 
       await Order.create(payload);

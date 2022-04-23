@@ -101,6 +101,7 @@ export const parseQuickNodeRequest = (req) => {
       transactionHash: tx_id,
       price,
       chainId,
+      contract: contract_address,
     },
   };
 };
