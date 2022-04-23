@@ -1,7 +1,11 @@
 import BigNumber from 'bignumber.js';
 
 import { Order } from '../../models';
-import { successResponse, errorResponse } from '../../helpers';
+import {
+  successResponse,
+  errorResponse,
+  parseQuickNodeRequest,
+} from '../../helpers';
 import { contractAddresses } from '../../config/contractAddresses';
 
 export const getOrders = async (req, res) => {
@@ -28,44 +32,28 @@ export const getOrders = async (req, res) => {
 
 export const addOrder = async (req, res) => {
   try {
-    const { tx_id, args, contract_address } = req.body.body;
-    const chainId = req.query.chainId || '1';
+    const { error, data } = parseQuickNodeRequest(req);
 
-    if (contract_address != contractAddresses[chainId].wyvernExchangeV2) {
-      return errorResponse(
-        req,
-        res,
-        'order/addOrder',
-        'Invalid contract_address'
-      );
+    if (error != '') {
+      return errorResponse(req, res, 'order/addOrder', error);
     }
-    if (!args) {
-      return errorResponse(req, res, 'order/addOrder', 'Invalid args');
-    }
-    if (!tx_id) {
-      return errorResponse(req, res, 'order/addOrder', 'No tx_id');
-    }
-    if (args && args.length > 0) {
-      const transactionHash = tx_id;
 
-      const bigPrice = new BigNumber(args[3]);
-      const price = bigPrice.div('1000000000000000000').toNumber().toFixed(8);
+    const { transactionHash, price, chainId } = data;
 
-      const order = await Order.findOne({
-        where: { transactionHash, chainId },
-      });
+    const order = await Order.findOne({
+      where: { transactionHash, chainId },
+    });
 
-      if (!order) {
-        const payload = {
-          transactionHash,
-          price,
-          chainId,
-          used: false,
-          source: contract_address,
-        };
+    if (!order) {
+      const payload = {
+        transactionHash,
+        price,
+        chainId,
+        used: false,
+        source: contract_address,
+      };
 
-        await Order.create(payload);
-      }
+      await Order.create(payload);
     }
 
     return successResponse(req, res, {});
