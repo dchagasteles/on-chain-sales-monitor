@@ -81,7 +81,7 @@ export const parseQuickNodeRequest = (req) => {
   const { contract_address, tx_id, args } = data;
   const chainId = req.query.chainId || '1';
 
-  if (!contractAddresses[chainId].supportedNFTs.includes(contract_address)) {
+  if (contractAddresses[chainId].wyvernExchangeV2 !== contract_address) {
     return {
       error: 'Not supportive contract_address.',
     };
