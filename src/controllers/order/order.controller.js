@@ -31,32 +31,24 @@ export const addOrder = async (req, res) => {
   try {
     const { error, data } = parseQuickNodeRequest(req);
 
-    if (error != '') {
-      return res.status(500).json({
-        code: 500,
-        errorMessage: 'Failed to parse',
-        error,
-        data: null,
-        success: false,
+    if (error === '') {
+      const { transactionHash, price, chainId, contract } = data;
+
+      const order = await Order.findOne({
+        where: { transactionHash, chainId },
       });
-    }
 
-    const { transactionHash, price, chainId, contract } = data;
+      if (!order) {
+        const payload = {
+          transactionHash,
+          price,
+          chainId,
+          used: false,
+          source: contract,
+        };
 
-    const order = await Order.findOne({
-      where: { transactionHash, chainId },
-    });
-
-    if (!order) {
-      const payload = {
-        transactionHash,
-        price,
-        chainId,
-        used: false,
-        source: contract,
-      };
-
-      await Order.create(payload);
+        await Order.create(payload);
+      }
     }
 
     return successResponse(req, res, {});
