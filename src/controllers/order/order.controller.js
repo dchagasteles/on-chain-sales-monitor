@@ -32,7 +32,13 @@ export const addOrder = async (req, res) => {
     const { error, data } = parseQuickNodeRequest(req);
 
     if (error != '') {
-      return errorResponse(req, res, 'order/addOrder', error);
+      return res.status(500).json({
+        code: 500,
+        errorMessage: 'Failed to parse',
+        error,
+        data: null,
+        success: false,
+      });
     }
 
     const { transactionHash, price, chainId, contract } = data;
