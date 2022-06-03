@@ -30,7 +30,7 @@ export const removeOrders = async () => {
   }
 };
 
-export const removeOrdersCron = cron.schedule('0 0 */6 * * *', async () => {
+export const removeOrdersCron = cron.schedule('0 0 */4 * * *', async () => {
   try {
     await removeOrders();
   } catch (e) {
