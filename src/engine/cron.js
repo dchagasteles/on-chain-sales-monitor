@@ -9,20 +9,20 @@ import { Order, Log } from '../models';
 export const removeOrders = async () => {
   const now = new Date();
   const ONE_HOUR = 60 * 60 * 1000; /* ms */
-  const dateSixHoursAgo = new Date(now.getTime() - ONE_HOUR * 6);
+  const fourHoursAgo = new Date(now.getTime() - ONE_HOUR * 4);
 
   try {
     await Order.destroy({
       where: {
         createdAt: {
-          [Op.lte]: dateSixHoursAgo,
+          [Op.lte]: fourHoursAgo,
         },
       },
     });
   } catch (e) {
     await Log.create({
       from: 'cron/updateOrdres',
-      msg: `failed to remove orders before ${dateSixHoursAgo.toString()}, ${
+      msg: `failed to remove orders before ${fourHoursAgo.toString()}, ${
         e.message
       }`,
       type: 'error',
