@@ -21,3 +21,9 @@ export const deleteOrder = {
     transactionHash: Joi.string().required(),
   },
 };
+
+export const getOrderPrices = {
+  // body: {
+  //   transactionHashs: Joi.array().items(Joi.string()).required,
+  // },
+};
