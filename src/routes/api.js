@@ -23,7 +23,7 @@ router.get(
   orderController.getOrder
 );
 
-router.get(
+router.post(
   '/getOrderPrices',
   validate(orderValidator.getOrderPrices),
   orderController.getOrderPrices
