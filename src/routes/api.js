@@ -23,6 +23,12 @@ router.get(
   orderController.getOrder
 );
 
+router.get(
+  '/getOrderPrices',
+  validate(orderValidator.getOrderPrices),
+  orderController.getOrderPrices
+);
+
 router.delete(
   '/orders/:transactionHash',
   validate(orderValidator.deleteOrder),
