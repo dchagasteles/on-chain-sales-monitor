@@ -1,4 +1,4 @@
-# NFT Price API
+# Off-chain sevice to manage orders
 
 ## Project Setup
 
