@@ -4,6 +4,8 @@ import validate from 'express-validation';
 import * as orderController from '../controllers/order/order.controller';
 import * as orderValidator from '../controllers/order/order.validator';
 import * as logController from '../controllers/log/log.controller';
+import * as saleController from '../controllers/sale/sale.controller';
+import * as saleValidator from '../controllers/sale/sale.validator';
 
 const router = express.Router();
 
@@ -15,6 +17,13 @@ router.post(
 );
 router.get('/orders', orderController.getOrders);
 router.delete('/orders', orderController.deleteOrders);
+
+router.get('/sales', validate(saleValidator.getSales), saleController.getSales);
+router.delete(
+  '/sales',
+  validate(saleValidator.deleteSales),
+  saleController.deleteSales
+);
 
 // for Drops API
 router.get(
