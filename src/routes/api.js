@@ -9,6 +9,38 @@ import * as saleValidator from '../controllers/sale/sale.validator';
 
 const router = express.Router();
 
+// get ether price of NFT
+router.get(
+  '/price',
+  validate(priceValidator.getPrice),
+  priceController.getPrice
+);
+
+// get ether all price of NFT
+router.get(
+  '/prices/:id',
+  validate(priceValidator.allPrices),
+  priceController.allPrices
+);
+
+// for CRUD of NFTs
+router.get('/nfts', nftController.allNfts);
+router.get('/nfts/:id', validate(nftValidator.getNft), nftController.getNft);
+router.post('/nfts', validate(nftValidator.addNft), nftController.addNft);
+router.put(
+  '/nfts/:id',
+  validate(nftValidator.updateNft),
+  nftController.updateNft
+);
+router.delete(
+  '/nfts/:id',
+  validate(nftValidator.removeNft),
+  nftController.removeNft
+);
+
+// for testing purpose
+router.post('/manual', manualController.doManual);
+
 // for quicknode
 router.post(
   '/orders',
